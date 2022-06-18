@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>664</width>
+    <height>578</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>664</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuShow_Database_Equipment">
+     <property name="title">
+      <string>Show Database Equipment</string>
+     </property>
+     <addaction name="actionContainer"/>
+     <addaction name="actionRing_Gamma"/>
+     <addaction name="actionPycnometer"/>
+     <addaction name="actionMold"/>
+     <addaction name="actionCBR"/>
+     <addaction name="actionConsolidation"/>
+    </widget>
+    <addaction name="actionNew_Project"/>
+    <addaction name="actionList_Project"/>
+    <addaction name="separator"/>
+    <addaction name="actionDatabase_Equipment"/>
+    <addaction name="actionEdit_Database_Equipment"/>
+    <addaction name="menuShow_Database_Equipment"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+    <addaction name="actionExit_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit_3"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionNew_Edit"/>
+   </widget>
+   <widget class="QMenu" name="menuForm">
+    <property name="title">
+     <string>Form</string>
+    </property>
+    <addaction name="actionNew_Form"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionNew_Help"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuForm"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionNew_Project">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionList_Project">
+   <property name="text">
+    <string>List Project</string>
+   </property>
+  </action>
+  <action name="actionDatabase_Equipment">
+   <property name="text">
+    <string>Database Equipment</string>
+   </property>
+  </action>
+  <action name="actionEdit_Database_Equipment">
+   <property name="text">
+    <string>Edit Database Equipment</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>New Client</string>
+   </property>
+  </action>
+  <action name="actionContainer">
+   <property name="text">
+    <string>Container</string>
+   </property>
+  </action>
+  <action name="actionRing_Gamma">
+   <property name="text">
+    <string>Ring Gamma</string>
+   </property>
+  </action>
+  <action name="actionPycnometer">
+   <property name="text">
+    <string>Pycnometer</string>
+   </property>
+  </action>
+  <action name="actionMold">
+   <property name="text">
+    <string>Mold</string>
+   </property>
+  </action>
+  <action name="actionCBR">
+   <property name="text">
+    <string>CBR</string>
+   </property>
+  </action>
+  <action name="actionConsolidation">
+   <property name="text">
+    <string>Consolidation</string>
+   </property>
+  </action>
+  <action name="actionExit_2">
+   <property name="text">
+    <string>Show List Client</string>
+   </property>
+  </action>
+  <action name="actionExit_3">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionNew_Form">
+   <property name="text">
+    <string>New Form</string>
+   </property>
+  </action>
+  <action name="actionNew_Edit">
+   <property name="text">
+    <string>New Edit</string>
+   </property>
+  </action>
+  <action name="actionNew_Help">
+   <property name="text">
+    <string>New Help</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>296</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>331</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

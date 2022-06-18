@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuDatabase_Equipment">
+     <property name="title">
+      <string>Database Equipment</string>
+     </property>
+     <widget class="QMenu" name="menuContainer">
+      <property name="title">
+       <string>Container</string>
+      </property>
+      <addaction name="actionShow_Data_Container"/>
+     </widget>
+     <widget class="QMenu" name="menuRing_Gamma">
+      <property name="title">
+       <string>Ring Gamma</string>
+      </property>
+      <addaction name="actionShow_Data_RingGamma"/>
+     </widget>
+     <widget class="QMenu" name="menuPycnometer">
+      <property name="title">
+       <string>Pycnometer</string>
+      </property>
+      <addaction name="actionShow_Data_Pycnometer"/>
+     </widget>
+     <widget class="QMenu" name="menuMold">
+      <property name="title">
+       <string>Mold</string>
+      </property>
+      <addaction name="actionShow_Data_Mold"/>
+     </widget>
+     <widget class="QMenu" name="menuCBR">
+      <property name="title">
+       <string>CBR</string>
+      </property>
+      <addaction name="actionShow_Data_Cbr"/>
+     </widget>
+     <widget class="QMenu" name="menuRing_Consolidation">
+      <property name="title">
+       <string>Ring Consolidation</string>
+      </property>
+      <addaction name="actionShow_Data_Consolidation"/>
+     </widget>
+     <widget class="QMenu" name="menuProving_Ring">
+      <property name="title">
+       <string>Proving Ring</string>
+      </property>
+      <addaction name="actionShow_Data_ProvingRing"/>
+     </widget>
+     <addaction name="menuContainer"/>
+     <addaction name="menuRing_Gamma"/>
+     <addaction name="menuPycnometer"/>
+     <addaction name="menuMold"/>
+     <addaction name="menuCBR"/>
+     <addaction name="menuRing_Consolidation"/>
+     <addaction name="menuProving_Ring"/>
+    </widget>
+    <addaction name="menuDatabase_Equipment"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAdd_New_Container">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_Container">
+   <property name="text">
+    <string>Show Data Container</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_RingGamma">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_RingGamma">
+   <property name="text">
+    <string>Show Data Ring Gamma</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Pycnometer">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_Pycnometer">
+   <property name="text">
+    <string>Show Data Pycnometer</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Mold">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_Mold">
+   <property name="text">
+    <string>Show Data Mold</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Cbr">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_Cbr">
+   <property name="text">
+    <string>Show Data CBR</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Consolidation">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_Consolidation">
+   <property name="text">
+    <string>Show Data Ring Consolidation</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_ProvingRing">
+   <property name="text">
+    <string>Add New</string>
+   </property>
+  </action>
+  <action name="actionShow_Data_ProvingRing">
+   <property name="text">
+    <string>Show Data Proving Ring</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
