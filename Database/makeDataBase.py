@@ -69,12 +69,24 @@ def createDataBase():
         )
     '''
 
+    sqlPycnometer = '''
+        CREATE TABLE tPycnometer (
+            idxPycno INTEGER NOT NULL PRIMARY KEY,
+            idPycno VARCHAR(4),
+            weightPycno REAL,
+            valMPycno REAL,
+            valNPycno REAL,
+            datePycno NUMERIC
+        )
+    '''
+
     listTable = [
         sqlContainer,
         sqlRingGamma,
         sqlRingConsolidation,
         sqlMold,
-        sqlCbr
+        sqlCbr,
+        sqlPycnometer
     ]
 
     for sql in listTable:

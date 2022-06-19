@@ -22,10 +22,7 @@ class RingConsolidation(QWidget):
         self.ringConsolidation.pushButtonDelete.clicked.connect(self.pushButtonDeleteClicked)
 
     def pushButtonAddClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addRingConsolidation()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         if self.qdialog.exec() == QDialog.Accepted:
             id = self.getRowCount() + 1
@@ -51,10 +48,7 @@ class RingConsolidation(QWidget):
             self.loadRingConsol()
 
     def pushButtonEditClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addRingConsolidation()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         ringId = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 0).text()
         ringWeight = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 1).text()
@@ -130,6 +124,12 @@ class RingConsolidation(QWidget):
         else:
             print('error')
             sys.exit(1)
+
+    def setAdd(self):
+        self.qdialog = QtWidgets.QDialog()
+        self.ui = Ui_addRingConsolidation()
+        self.ui.setupUi(self.qdialog)
+        self.qdialog.show()
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)

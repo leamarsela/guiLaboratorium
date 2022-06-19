@@ -21,10 +21,7 @@ class Container(QWidget):
         self.container.pushButtonDelete.clicked.connect(self.pushButtonDeleteClicked)
 
     def pushButtonAddClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addContainer()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
             containerId = self.ui.lineEditContainerId.text()
@@ -44,10 +41,7 @@ class Container(QWidget):
             self.loadDataContainer()
 
     def pushButtonEditClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addContainer()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         containerId = self.container.tableWidget.item(self.container.tableWidget.currentRow(), 0).text()
         containerWeight = self.container.tableWidget.item(self.container.tableWidget.currentRow(), 1).text()
@@ -116,6 +110,12 @@ class Container(QWidget):
         else:
             print('error')
             sys.exit(1)
+
+    def setAdd(self):
+        self.qdialog = QtWidgets.QDialog()
+        self.ui = Ui_addContainer()
+        self.ui.setupUi(self.qdialog)
+        self.qdialog.show()
 
 
 if __name__ == '__main__':

@@ -10,6 +10,7 @@ from RingGamma import *
 from RingConsolidation import *
 from Mold import *
 from Cbr import *
+from Pycnometer import *
 
 from MainWindowUi import *
 from PyQt5.QtCore import *
@@ -27,6 +28,8 @@ class MainWindow(QMainWindow):
         self.mainWindow.actionShow_Data_Consolidation.triggered.connect(self.actionShowDataRingConsolidation)
         self.mainWindow.actionShow_Data_Mold.triggered.connect(self.actionShowDataMold)
         self.mainWindow.actionShow_Data_Cbr.triggered.connect(self.actionShowDataCbr)
+        self.mainWindow.actionShow_Data_Pycnometer.triggered.connect(self.actionShowDataPycno)
+
 
     def actionShowDataContainer(self):
         self.container = Container()
@@ -47,6 +50,10 @@ class MainWindow(QMainWindow):
     def actionShowDataCbr(self):
         self.cbr = Cbr()
         self.cbr.show()
+
+    def actionShowDataPycno(self):
+        self.pycno = Pycnometer()
+        self.pycno.show()
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\Cbr.ui'
+# Form implementation generated from reading ui file 'Pycnometer.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -11,12 +11,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_DBCbr(object):
-    def setupUi(self, DBCbr):
-        DBCbr.setObjectName("DBCbr")
-        DBCbr.setEnabled(True)
-        DBCbr.resize(621, 562)
-        self.layoutWidget = QtWidgets.QWidget(DBCbr)
+class Ui_DBPycnometer(object):
+    def setupUi(self, DBPycnometer):
+        DBPycnometer.setObjectName("DBPycnometer")
+        DBPycnometer.setEnabled(True)
+        DBPycnometer.resize(621, 562)
+        self.layoutWidget = QtWidgets.QWidget(DBPycnometer)
         self.layoutWidget.setGeometry(QtCore.QRect(11, 11, 601, 541))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.layoutWidget)
@@ -60,34 +60,34 @@ class Ui_DBCbr(object):
         self.gridLayout.addWidget(self.pushButtonDelete, 0, 2, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 1, 0, 1, 1)
 
-        self.retranslateUi(DBCbr)
-        self.pushButtonClose.clicked.connect(DBCbr.close) # type: ignore
-        QtCore.QMetaObject.connectSlotsByName(DBCbr)
+        self.retranslateUi(DBPycnometer)
+        self.pushButtonClose.clicked.connect(DBPycnometer.close) # type: ignore
+        QtCore.QMetaObject.connectSlotsByName(DBPycnometer)
 
-    def retranslateUi(self, DBCbr):
+    def retranslateUi(self, DBPycnometer):
         _translate = QtCore.QCoreApplication.translate
-        DBCbr.setWindowTitle(_translate("DBCbr", "DB Cbr"))
+        DBPycnometer.setWindowTitle(_translate("DBPycnometer", "DB Cbr"))
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("DBCbr", "No. Ring"))
+        item.setText(_translate("DBPycnometer", "No. Pycno"))
         item = self.tableWidget.horizontalHeaderItem(1)
-        item.setText(_translate("DBCbr", "Weight (gr)"))
+        item.setText(_translate("DBPycnometer", "Weight (gr)"))
         item = self.tableWidget.horizontalHeaderItem(2)
-        item.setText(_translate("DBCbr", "Diameter (mm)"))
+        item.setText(_translate("DBPycnometer", "valM (-)"))
         item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("DBCbr", "Thickness (mm)"))
+        item.setText(_translate("DBPycnometer", "valN (-)"))
         item = self.tableWidget.horizontalHeaderItem(4)
-        item.setText(_translate("DBCbr", "Volume (mm^3)"))
-        self.pushButtonClose.setText(_translate("DBCbr", "Close"))
-        self.pushButtonAdd.setText(_translate("DBCbr", "Add"))
-        self.pushButtonUpdate.setText(_translate("DBCbr", "Edit"))
-        self.pushButtonDelete.setText(_translate("DBCbr", "Delete"))
+        item.setText(_translate("DBPycnometer", "Date (-)"))
+        self.pushButtonClose.setText(_translate("DBPycnometer", "Close"))
+        self.pushButtonAdd.setText(_translate("DBPycnometer", "Add"))
+        self.pushButtonUpdate.setText(_translate("DBPycnometer", "Edit"))
+        self.pushButtonDelete.setText(_translate("DBPycnometer", "Delete"))
 
 
 # if __name__ == "__main__":
 #     import sys
 #     app = QtWidgets.QApplication(sys.argv)
-#     DBCbr = QtWidgets.QWidget()
-#     ui = Ui_DBCbr()
-#     ui.setupUi(DBCbr)
-#     DBCbr.show()
+#     DBPycnometer = QtWidgets.QWidget()
+#     ui = Ui_DBPycnometer()
+#     ui.setupUi(DBPycnometer)
+#     DBPycnometer.show()
 #     sys.exit(app.exec_())

@@ -22,10 +22,7 @@ class Mold(QWidget):
         self.mold.pushButtonDelete.clicked.connect(self.pushButtonDeleteClicked)
 
     def pushButtonAddClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addMold()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
             id = self.getRowCount() + 1
@@ -51,10 +48,7 @@ class Mold(QWidget):
             self.loadMold()
 
     def pushButtonEditClicked(self):
-        self.qdialog = QtWidgets.QDialog()
-        self.ui = Ui_addMold()
-        self.ui.setupUi(self.qdialog)
-        self.qdialog.show()
+        self.setAdd()
 
         moldId = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 0).text()
         moldWeight = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 1).text()
@@ -130,6 +124,12 @@ class Mold(QWidget):
         else:
             print('error')
             sys.exit(1)
+
+    def setAdd(self):
+        self.qdialog = QtWidgets.QDialog()
+        self.ui = Ui_addMold()
+        self.ui.setupUi(self.qdialog)
+        self.qdialog.show()
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
