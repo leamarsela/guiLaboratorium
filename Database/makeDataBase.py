@@ -45,11 +45,36 @@ def createDataBase():
         )
     '''
 
+    sqlMold = '''
+        CREATE TABLE tMold (
+            idxMold INTEGER NOT NULL PRIMARY KEY,
+            idMold INTEGER,
+            weightMold REAL,
+            diameterMold REAL,
+            thicknessMold REAL,
+            volumeMold REAL,
+            dateMold NUMERIC
+        )
+    '''
+
+    sqlCbr = '''
+        CREATE TABLE tCbr (
+            idxCbr INTEGER NOT NULL PRIMARY KEY,
+            idCbr INTEGER,
+            weightCbr REAL,
+            diameterCbr REAL,
+            thicknessCbr REAL,
+            volumeCbr REAL,
+            dateCbr NUMERIC
+        )
+    '''
 
     listTable = [
         sqlContainer,
         sqlRingGamma,
-        sqlRingConsolidation
+        sqlRingConsolidation,
+        sqlMold,
+        sqlCbr
     ]
 
     for sql in listTable:

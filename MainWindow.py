@@ -8,6 +8,8 @@ sys.path.insert(0, dir + "/DataBaseEquipment")
 from Container import *
 from RingGamma import *
 from RingConsolidation import *
+from Mold import *
+from Cbr import *
 
 from MainWindowUi import *
 from PyQt5.QtCore import *
@@ -23,6 +25,8 @@ class MainWindow(QMainWindow):
         self.mainWindow.actionShow_Data_Container.triggered.connect(self.actionShowDataContainer)
         self.mainWindow.actionShow_Data_RingGamma.triggered.connect(self.actionShowDataRingGamma)
         self.mainWindow.actionShow_Data_Consolidation.triggered.connect(self.actionShowDataRingConsolidation)
+        self.mainWindow.actionShow_Data_Mold.triggered.connect(self.actionShowDataMold)
+        self.mainWindow.actionShow_Data_Cbr.triggered.connect(self.actionShowDataCbr)
 
     def actionShowDataContainer(self):
         self.container = Container()
@@ -35,6 +39,14 @@ class MainWindow(QMainWindow):
     def actionShowDataRingConsolidation(self):
         self.ringConsolidation = RingConsolidation()
         self.ringConsolidation.show()
+
+    def actionShowDataMold(self):
+        self.mold = Mold()
+        self.mold.show()
+
+    def actionShowDataCbr(self):
+        self.cbr = Cbr()
+        self.cbr.show()
 
 
 if __name__ == '__main__':

@@ -1,9 +1,7 @@
 import sys
 import datetime
 
-
 from ContainerUi import *
-from AddContainer import *
 from addContainerUi import *
 
 from PyQt5.QtCore import *

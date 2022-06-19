@@ -2,11 +2,8 @@ import sys
 import datetime
 from math import pi
 
-
 from RingConsolidationUi import *
-from AddRingConsolidation import *
 from addRingConsolidationUi import *
-
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -64,7 +61,7 @@ class RingConsolidation(QWidget):
         ringDiameter = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 2).text()
         ringThick = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 3).text()
 
-        indexRingConsolidation = self.ringConsolidation.tableWidget.currentRow() + 1
+        idxRingConsolidation = self.ringConsolidation.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(ringId)
         self.ui.lineEditWeightRing.setText(ringWeight)
         self.ui.lineEditDiameterRing.setText(ringDiameter)
@@ -87,7 +84,7 @@ class RingConsolidation(QWidget):
                 self.ui.lineEditThickRing.text(),
                 volume,
                 currentTime,
-                indexRingConsolidation
+                idxRingConsolidation
                 )
             )
             self.loadRingConsol()

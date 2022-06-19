@@ -3,7 +3,6 @@ import datetime
 from math import pi
 
 from RingGammaUi import *
-from AddRingGamma import *
 from addRingGammaUi import *
 
 from PyQt5.QtCore import *
