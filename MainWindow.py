@@ -11,11 +11,12 @@ from RingConsolidation import *
 from Mold import *
 from Cbr import *
 from Pycnometer import *
+from ProvingRing import *
+
 
 from MainWindowUi import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -29,7 +30,7 @@ class MainWindow(QMainWindow):
         self.mainWindow.actionShow_Data_Mold.triggered.connect(self.actionShowDataMold)
         self.mainWindow.actionShow_Data_Cbr.triggered.connect(self.actionShowDataCbr)
         self.mainWindow.actionShow_Data_Pycnometer.triggered.connect(self.actionShowDataPycno)
-
+        self.mainWindow.actionShow_Data_ProvingRing.triggered.connect(self.actionShowDataProvingRing)
 
     def actionShowDataContainer(self):
         self.container = Container()
@@ -54,6 +55,10 @@ class MainWindow(QMainWindow):
     def actionShowDataPycno(self):
         self.pycno = Pycnometer()
         self.pycno.show()
+
+    def actionShowDataProvingRing(self):
+        self.provingRing = ProvingRing()
+        self.provingRing.show()
 
 
 if __name__ == '__main__':

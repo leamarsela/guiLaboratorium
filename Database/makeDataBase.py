@@ -80,13 +80,25 @@ def createDataBase():
         )
     '''
 
+    sqlProvingRing = '''
+        CREATE TABLE tProvingRing (
+            idxProving INTEGER NOT NULL PRIMARY KEY,
+            idProving VARCHAR(5),
+            valCalibration REAL,
+            dateProvingRing NUMERIC
+        )
+    '''
+
+
+
     listTable = [
         sqlContainer,
         sqlRingGamma,
         sqlRingConsolidation,
         sqlMold,
         sqlCbr,
-        sqlPycnometer
+        sqlPycnometer,
+        sqlProvingRing
     ]
 
     for sql in listTable:

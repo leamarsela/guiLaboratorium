@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>addRingGamma</class>
- <widget class="QDialog" name="addRingGamma">
+ <class>addProvingRing</class>
+ <widget class="QDialog" name="addProvingRing">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>359</width>
-    <height>313</height>
+    <height>184</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add Ring Gamma</string>
+   <string>Add Proving Ring</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>260</y>
+     <y>140</y>
      <width>321</width>
      <height>32</height>
     </rect>
@@ -49,62 +49,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEditDiameterRing">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>130</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEditThickRing">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>190</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>130</y>
-     <width>181</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Diameter (mm) :</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_4">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Thickness (mm.) :</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
@@ -123,7 +67,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Ring Gamma ID :</string>
+       <string>Proving Ring ID :</string>
       </property>
      </widget>
     </item>
@@ -135,7 +79,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Weight Ring (gr.) :</string>
+       <string>Calibration (kg/div) :</string>
       </property>
      </widget>
     </item>
@@ -147,7 +91,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>addRingGamma</receiver>
+   <receiver>addProvingRing</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -163,7 +107,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>addRingGamma</receiver>
+   <receiver>addProvingRing</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
