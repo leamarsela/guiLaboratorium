@@ -25,69 +25,77 @@ class RingConsolidation(QWidget):
         self.setAdd()
 
         if self.qdialog.exec() == QDialog.Accepted:
-            id = self.getRowCount() + 1
             ringId = self.ui.lineEditRingId.text()
             ringWeight = self.ui.lineEditWeightRing.text()
             ringDiameter = self.ui.lineEditDiameterRing.text()
             ringThick = self.ui.lineEditThickRing.text()
             ringVolume = self.calcVolume(ringDiameter, ringThick)
-            currentTime = datetime.datetime.now()
+            currentTime = self.currentTime()
             query = QSqlQuery()
-            query.exec_(
-                "INSERT INTO tRingConsolidation VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')" %
-                (
-                id,
-                ringId,
-                ringWeight,
-                ringDiameter,
-                ringThick,
-                ringVolume,
-                currentTime
-                )
-            )
+            query.prepare("INSERT INTO tRingConsolidation (ROWID, idRingConsol, weightRingConsol, diameterRingConsol, thicknessRingConsol, volumeRingConsol, dateRingConsol)"
+                          "VALUES (?, ?, ?, ?, ?, ?, ?)")
+
+            query.bindValue(0, None)
+            query.bindValue(1, ringId)
+            query.bindValue(2, ringWeight)
+            query.bindValue(3, ringDiameter)
+            query.bindValue(4, ringThick)
+            query.bindValue(5, ringVolume)
+            query.bindValue(6, str(currentTime))
+            query.exec_()
             self.loadRingConsol()
 
     def pushButtonEditClicked(self):
         self.setAdd()
 
         ringId = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(ringId)
         ringWeight = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 1).text()
         ringDiameter = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 2).text()
         ringThick = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 3).text()
 
-        idxRingConsolidation = self.ringConsolidation.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(ringId)
         self.ui.lineEditWeightRing.setText(ringWeight)
         self.ui.lineEditDiameterRing.setText(ringDiameter)
         self.ui.lineEditThickRing.setText(ringThick)
-        volume = self.calcVolume(ringDiameter, ringThick)
-        currentTime = datetime.datetime.now()
+
+        self.ui.lineEditWeightRing.textChanged.connect(lambda x: float(ringWeight))
+        self.ui.lineEditDiameterRing.textChanged.connect(lambda x: float(ringDiameter))
+        self.ui.lineEditThickRing.textChanged.connect(lambda x: float(ringThick))
 
         if self.qdialog.exec_() == QDialog.Accepted:
+            ringId = self.ui.lineEditRingId.text()
+            ringWeight = self.ui.lineEditWeightRing.text()
+            ringDiameter = self.ui.lineEditDiameterRing.text()
+            ringThick = self.ui.lineEditThickRing.text()
+            volume = self.calcVolume(ringDiameter, ringThick)
+            currentTime = self.currentTime()
+
             query = QSqlQuery()
             query.exec_(
                 '''
                     UPDATE tRingConsolidation
                     SET idRingConsol = %d, weightRingConsol = '%s', diameterRingConsol = '%s', thicknessRingConsol = '%s', volumeRingConsol = '%s', dateRingConsol = '%s'
-                    WHERE idxRingConsolidation = %d
+                    WHERE ROWID = %d
                 ''' %
                 (
-                int(self.ui.lineEditRingId.text()),
-                self.ui.lineEditWeightRing.text(),
-                self.ui.lineEditDiameterRing.text(),
-                self.ui.lineEditThickRing.text(),
+                int(ringId),
+                ringWeight,
+                ringDiameter,
+                ringThick,
                 volume,
                 currentTime,
-                idxRingConsolidation
+                rowId
                 )
             )
             self.loadRingConsol()
 
     def pushButtonDeleteClicked(self):
-        idxRingConsolidation = self.ringConsolidation.tableWidget.currentRow() + 1
+        valIdRingConsolidation = self.ringConsolidation.tableWidget.item(self.ringConsolidation.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(valIdRingConsolidation)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tRingConsolidation WHERE idxRingConsolidation = %d' % idxRingConsolidation
+            'DELETE FROM tRingConsolidation WHERE ROWID = %d' % rowId
         )
         self.loadRingConsol()
 
@@ -98,16 +106,25 @@ class RingConsolidation(QWidget):
         numberColumn = len(columnHeaders)
         self.ringConsolidation.tableWidget.setColumnCount(numberColumn)
         self.ringConsolidation.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         row = 0
+        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tRingConsolidation')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i + 1)))
+                item.setText(str(query.value(i)))
                 self.ringConsolidation.tableWidget.setItem(row, i, item)
             row += 1
+
+    def getRowId(self, idRingConsol):
+        query = QSqlQuery()
+        query.exec_('SELECT ROWID, * FROM tRingConsolidation WHERE idRingConsol = %d' % int(idRingConsol))
+        query.next()
+        rowId = query.value(0)
+        return rowId
 
     def getRowCount(self):
         query = QSqlQuery()
@@ -133,7 +150,18 @@ class RingConsolidation(QWidget):
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
-        return volume
+        return round(volume, 3)
+
+    def currentTime(self):
+        return datetime.date.today()
+
+    def setColTableWidget(self):
+        self.ringConsolidation.tableWidget.setColumnWidth(0, 80)
+        self.ringConsolidation.tableWidget.setColumnWidth(1, 90)
+        self.ringConsolidation.tableWidget.setColumnWidth(2, 70)
+        self.ringConsolidation.tableWidget.setColumnWidth(3, 70)
+        self.ringConsolidation.tableWidget.setColumnWidth(4, 90)
+        self.ringConsolidation.tableWidget.horizontalHeader().setStretchLastSection(True)
 
 
 if __name__ == '__main__':

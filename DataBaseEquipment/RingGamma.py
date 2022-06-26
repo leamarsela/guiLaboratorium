@@ -25,69 +25,78 @@ class RingGamma(QWidget):
         self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
-            id = self.getRowCount() + 1
             ringId = self.ui.lineEditRingId.text()
             ringWeight = self.ui.lineEditWeightRing.text()
             ringDiameter = self.ui.lineEditDiameterRing.text()
             ringThick = self.ui.lineEditThickRing.text()
             ringVolume = self.calcVolume(ringDiameter, ringThick)
-            currentTime = datetime.datetime.now()
+            currentTime =self.currentTime()
             query = QSqlQuery()
-            query.exec_(
-                "INSERT INTO tRingGamma VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')" %
-                (
-                id,
-                ringId,
-                ringWeight,
-                ringDiameter,
-                ringThick,
-                ringVolume,
-                currentTime
-                )
-            )
+            query.prepare(
+                    "INSERT INTO tRingGamma (ROWID, idRingGamma, weightRingGamma, diameterRingGamma, thicknessRingGamma, volumeRingGamma, dateRingGamma)"
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)")
+
+            query.bindValue(0, None)
+            query.bindValue(1, ringId)
+            query.bindValue(2, ringWeight)
+            query.bindValue(3, ringDiameter)
+            query.bindValue(4, ringThick)
+            query.bindValue(5, ringVolume)
+            query.bindValue(6, str(currentTime))
+            query.exec_()
             self.loadDataRingGamma()
 
     def pushButtonEditClicked(self):
         self.setAdd()
 
         ringId = self.ringGamma.tableWidget.item(self.ringGamma.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(ringId)
         ringWeight = self.ringGamma.tableWidget.item(self.ringGamma.tableWidget.currentRow(), 1).text()
         ringDiameter = self.ringGamma.tableWidget.item(self.ringGamma.tableWidget.currentRow(), 2).text()
         ringThick = self.ringGamma.tableWidget.item(self.ringGamma.tableWidget.currentRow(), 3).text()
 
-        indexRingGamma = self.ringGamma.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(ringId)
         self.ui.lineEditWeightRing.setText(ringWeight)
         self.ui.lineEditDiameterRing.setText(ringDiameter)
         self.ui.lineEditThickRing.setText(ringThick)
-        volume = self.calcVolume(ringDiameter, ringThick)
-        currentTime = datetime.datetime.now()
+
+        self.ui.lineEditWeightRing.textChanged.connect(lambda x: float(ringWeight))
+        self.ui.lineEditDiameterRing.textChanged.connect(lambda x: float(ringDiameter))
+        self.ui.lineEditThickRing.textChanged.connect(lambda x: float(ringThick))
 
         if self.qdialog.exec() == QDialog.Accepted:
+            ringId = self.ui.lineEditRingId.text()
+            ringWeight = self.ui.lineEditWeightRing.text()
+            ringDiameter = self.ui.lineEditDiameterRing.text()
+            ringThick = self.ui.lineEditThickRing.text()
+            volume = self.calcVolume(ringDiameter, ringThick)
+            currentTime = self.currentTime()
+
             query = QSqlQuery()
             query.exec_(
                 '''
                     UPDATE tRingGamma
                     SET idRingGamma = %d, weightRingGamma = '%s', diameterRingGamma = '%s', thicknessRingGamma = '%s', volumeRingGamma = '%s', dateRingGamma = '%s'
-                    WHERE idxRingGamma = %d
+                    WHERE ROWID = %d
                 ''' %
                 (
-                int(self.ui.lineEditRingId.text()),
-                self.ui.lineEditWeightRing.text(),
-                self.ui.lineEditDiameterRing.text(),
-                self.ui.lineEditThickRing.text(),
+                int(ringId),
+                ringWeight,
+                ringDiameter,
+                ringThick,
                 volume,
                 currentTime,
-                indexRingGamma
+                rowId
                 )
             )
             self.loadDataRingGamma()
 
     def pushButtonDeleteClicked(self):
-        idxRingGamma = self.ringGamma.tableWidget.currentRow() + 1
+        valIdRingGamma = self.ringGamma.tableWidget.item(self.ringGamma.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(valIdRingGamma)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tRingGamma WHERE idxRingGamma = %d' % idxRingGamma
+            'DELETE FROM tRingGamma WHERE ROWID = %d' % rowId
         )
         self.loadDataRingGamma()
 
@@ -98,17 +107,26 @@ class RingGamma(QWidget):
         numberColumn = len(columnHeaders)
         self.ringGamma.tableWidget.setColumnCount(numberColumn)
         self.ringGamma.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         idRing, wrightRing, dRing, tRing, dateRing = range(5)
         row = 0
+        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tRingGamma')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i + 1)))
+                item.setText(str(query.value(i)))
                 self.ringGamma.tableWidget.setItem(row, i, item)
             row += 1
+
+    def getRowId(self, idRingGamma):
+        query = QSqlQuery()
+        query.exec_('SELECT ROWID, * FROM tRingGamma WHERE idRingGamma = %d' % int(idRingGamma))
+        query.next()
+        rowId = query.value(0)
+        return rowId
 
     def getRowCount(self):
         query = QSqlQuery()
@@ -134,7 +152,20 @@ class RingGamma(QWidget):
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
-        return volume
+        return round(volume, 3)
+
+    def setColTableWidget(self):
+        self.ringGamma.tableWidget.setColumnWidth(0, 80)
+        self.ringGamma.tableWidget.setColumnWidth(1, 90)
+        self.ringGamma.tableWidget.setColumnWidth(2, 70)
+        self.ringGamma.tableWidget.setColumnWidth(3, 70)
+        self.ringGamma.tableWidget.setColumnWidth(4, 90)
+        self.ringGamma.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+    def currentTime(self):
+        return datetime.date.today()
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

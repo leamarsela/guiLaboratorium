@@ -60,10 +60,18 @@ class Mold(QWidget):
         self.ui.lineEditWeightRing.setText(moldWeight)
         self.ui.lineEditDiameterRing.setText(moldDiameter)
         self.ui.lineEditThickRing.setText(moldThick)
-        volume = self.calcVolume(moldDiameter, moldThick)
-        currentTime = datetime.datetime.now()
+
+        self.ui.lineEditWeightRing.textChanged.connect(lambda x: float(moldWeight))
+        self.ui.lineEditDiameterRing.textChanged.connect(lambda x: float(moldDiameter))
+        self.ui.lineEditThickRing.textChanged.connect(lambda x: float(moldThick))
 
         if self.qdialog.exec_() == QDialog.Accepted:
+            currentTime = datetime.datetime.now()
+            moldWeight =  self.ui.lineEditWeightRing.text()
+            moldDiameter = self.ui.lineEditDiameterRing.text()
+            moldThick =  self.ui.lineEditThickRing.text()
+            volume = self.calcVolume(moldDiameter, moldThick)
+
             query = QSqlQuery()
             query.exec(
                 '''
@@ -98,6 +106,7 @@ class Mold(QWidget):
         numberColumn = len(columnHeaders)
         self.mold.tableWidget.setColumnCount(numberColumn)
         self.mold.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         row = 0
@@ -133,7 +142,15 @@ class Mold(QWidget):
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
-        return volume
+        return round(volume, 3)
+
+    def setColTableWidget(self):
+        self.mold.tableWidget.setColumnWidth(0, 80)
+        self.mold.tableWidget.setColumnWidth(1, 90)
+        self.mold.tableWidget.setColumnWidth(2, 70)
+        self.mold.tableWidget.setColumnWidth(3, 70)
+        self.mold.tableWidget.setColumnWidth(4, 90)
+        self.mold.tableWidget.horizontalHeader().setStretchLastSection(True)
 
 
 if __name__ == '__main__':

@@ -39,6 +39,8 @@ class Ui_MainWindow(object):
         self.menuRing_Consolidation.setObjectName("menuRing_Consolidation")
         self.menuProving_Ring = QtWidgets.QMenu(self.menuDatabase_Equipment)
         self.menuProving_Ring.setObjectName("menuProving_Ring")
+        self.menuDatabase_Project = QtWidgets.QMenu(self.menuFile)
+        self.menuDatabase_Project.setObjectName("menuDatabase_Project")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -71,6 +73,10 @@ class Ui_MainWindow(object):
         self.actionAdd_New_ProvingRing.setObjectName("actionAdd_New_ProvingRing")
         self.actionShow_Data_ProvingRing = QtWidgets.QAction(MainWindow)
         self.actionShow_Data_ProvingRing.setObjectName("actionShow_Data_ProvingRing")
+        self.actionAdd_New_Project = QtWidgets.QAction(MainWindow)
+        self.actionAdd_New_Project.setObjectName("actionAdd_New_Project")
+        self.actionShow_All_Project = QtWidgets.QAction(MainWindow)
+        self.actionShow_All_Project.setObjectName("actionShow_All_Project")
         self.menuContainer.addAction(self.actionShow_Data_Container)
         self.menuRing_Gamma.addAction(self.actionShow_Data_RingGamma)
         self.menuPycnometer.addAction(self.actionShow_Data_Pycnometer)
@@ -85,7 +91,10 @@ class Ui_MainWindow(object):
         self.menuDatabase_Equipment.addAction(self.menuCBR.menuAction())
         self.menuDatabase_Equipment.addAction(self.menuRing_Consolidation.menuAction())
         self.menuDatabase_Equipment.addAction(self.menuProving_Ring.menuAction())
+        self.menuDatabase_Project.addAction(self.actionShow_All_Project)
         self.menuFile.addAction(self.menuDatabase_Equipment.menuAction())
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.menuDatabase_Project.menuAction())
         self.menubar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -103,6 +112,7 @@ class Ui_MainWindow(object):
         self.menuCBR.setTitle(_translate("MainWindow", "CBR"))
         self.menuRing_Consolidation.setTitle(_translate("MainWindow", "Ring Consolidation"))
         self.menuProving_Ring.setTitle(_translate("MainWindow", "Proving Ring"))
+        self.menuDatabase_Project.setTitle(_translate("MainWindow", "Database Project"))
         self.actionAdd_New_Container.setText(_translate("MainWindow", "Add New"))
         self.actionShow_Data_Container.setText(_translate("MainWindow", "Show Data Container"))
         self.actionAdd_New_RingGamma.setText(_translate("MainWindow", "Add New"))
@@ -117,6 +127,8 @@ class Ui_MainWindow(object):
         self.actionShow_Data_Consolidation.setText(_translate("MainWindow", "Show Data Ring Consolidation"))
         self.actionAdd_New_ProvingRing.setText(_translate("MainWindow", "Add New"))
         self.actionShow_Data_ProvingRing.setText(_translate("MainWindow", "Show Data Proving Ring"))
+        self.actionAdd_New_Project.setText(_translate("MainWindow", "Add New Project"))
+        self.actionShow_All_Project.setText(_translate("MainWindow", "Show All Project"))
 
 
 if __name__ == "__main__":

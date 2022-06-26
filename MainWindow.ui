@@ -81,7 +81,15 @@
      <addaction name="menuRing_Consolidation"/>
      <addaction name="menuProving_Ring"/>
     </widget>
+    <widget class="QMenu" name="menuDatabase_Project">
+     <property name="title">
+      <string>Database Project</string>
+     </property>
+     <addaction name="actionShow_All_Project"/>
+    </widget>
     <addaction name="menuDatabase_Equipment"/>
+    <addaction name="separator"/>
+    <addaction name="menuDatabase_Project"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -154,6 +162,16 @@
   <action name="actionShow_Data_ProvingRing">
    <property name="text">
     <string>Show Data Proving Ring</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_Project">
+   <property name="text">
+    <string>Add New Project</string>
+   </property>
+  </action>
+  <action name="actionShow_All_Project">
+   <property name="text">
+    <string>Show All Project</string>
    </property>
   </action>
  </widget>

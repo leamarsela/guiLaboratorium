@@ -28,6 +28,7 @@ class ProvingRing(QWidget):
             pRingId = self.ui.lineEditRingId.text()
             pRingCalibration = self.ui.lineEditWeightRing.text()
             currentTime =  datetime.datetime.now()
+            print(id, pRingId, pRingCalibration, currentTime)
             query = QSqlQuery()
             query.exec_(
                 "INSERT INTO tProvingRing VALUES (%d, '%s', '%s', '%s')" %
@@ -69,10 +70,11 @@ class ProvingRing(QWidget):
             self.loadProvingRing()
 
     def pushButtonDeleteClicked(self):
-        idxProving = self.provingRing.tableWidget.currentRow() + 1
+        idProving = self.provingRing.tableWidget.item(self.provingRing.tableWidget.currentRow(), 0).text()
+
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tProvingRing WHERE idxProving = %d' % idxProving
+            'DELETE FROM tProvingRing WHERE idProving = "%s"' % idProving
         )
         self.loadProvingRing()
 
@@ -83,6 +85,7 @@ class ProvingRing(QWidget):
         numberColumn = len(columnHeaders)
         self.provingRing.tableWidget.setColumnCount(numberColumn)
         self.provingRing.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         row = 0
@@ -115,6 +118,11 @@ class ProvingRing(QWidget):
         query.next()
         rowCount = query.value(0)
         return rowCount
+
+    def setColTableWidget(self):
+        self.provingRing.tableWidget.setColumnWidth(0, 150)
+        self.provingRing.tableWidget.setColumnWidth(1, 150)
+        self.provingRing.tableWidget.horizontalHeader().setStretchLastSection(True)
 
 
 if __name__ == '__main__':

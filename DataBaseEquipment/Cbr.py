@@ -98,6 +98,7 @@ class Cbr(QWidget):
         numberColumn = len(columnHeaders)
         self.cbr.tableWidget.setColumnCount(numberColumn)
         self.cbr.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         row = 0
@@ -133,10 +134,15 @@ class Cbr(QWidget):
 
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
-        return volume
+        return round(volume, 3)
 
-
-
+    def setColTableWidget(self):
+        self.cbr.tableWidget.setColumnWidth(0, 80)
+        self.cbr.tableWidget.setColumnWidth(1, 85)
+        self.cbr.tableWidget.setColumnWidth(2, 65)
+        self.cbr.tableWidget.setColumnWidth(3, 65)
+        self.cbr.tableWidget.setColumnWidth(4, 100)
+        self.cbr.tableWidget.horizontalHeader().setStretchLastSection(True)
 
 
 if __name__ == '__main__':

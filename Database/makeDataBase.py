@@ -14,7 +14,6 @@ def createDataBase():
 
     sqlContainer = '''
             CREATE TABLE tContainer (
-                idxContainer INTEGER NOT NULL PRIMARY KEY,
                 idContainer INTEGER,
                 weightContainer REAL,
                 dateContainer NUMERIC
@@ -23,7 +22,6 @@ def createDataBase():
 
     sqlRingGamma = '''
         CREATE TABLE tRingGamma (
-            idxRingGamma INTEGER NOT NULL PRIMARY KEY,
             idRingGamma INTEGER,
             weightRingGamma REAL,
             diameterRingGamma REAL,
@@ -35,7 +33,6 @@ def createDataBase():
 
     sqlRingConsolidation = '''
         CREATE TABLE tRingConsolidation (
-            idxRingConsolidation INTEGER NOT NULL PRIMARY KEY,
             idRingConsol INTEGER,
             weightRingConsol REAL,
             diameterRingConsol REAL,
@@ -89,6 +86,16 @@ def createDataBase():
         )
     '''
 
+    sqlProject = '''
+        CREATE TABLE tProject (
+            idxProject INTEGER NOT NULL PRIMARY KEY,
+            idNumProject VARCHAR(5),
+            idClient VARCHAR(50),
+            idProject VARCHAR(50),
+            dateProject NUMERIC
+        )
+    '''
+
 
 
     listTable = [
@@ -98,7 +105,8 @@ def createDataBase():
         sqlMold,
         sqlCbr,
         sqlPycnometer,
-        sqlProvingRing
+        sqlProvingRing,
+        sqlProject
     ]
 
     for sql in listTable:
