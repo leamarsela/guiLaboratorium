@@ -25,37 +25,36 @@ class Mold(QWidget):
         self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
-            id = self.getRowCount() + 1
             moldId = self.ui.lineEditRingId.text()
             moldWeight = self.ui.lineEditWeightRing.text()
             moldDiameter = self.ui.lineEditDiameterRing.text()
             moldThick = self.ui.lineEditThickRing.text()
             moldVolume = self.calcVolume(moldDiameter, moldThick)
-            currentTime = datetime.datetime.now()
+            currentTime = self.currentTime()
             query = QSqlQuery()
-            query.exec_(
-                "INSERT INTO tMold VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')" %
-                (
-                id,
-                moldId,
-                moldWeight,
-                moldDiameter,
-                moldThick,
-                moldVolume,
-                currentTime
-                )
-            )
+            query.prepare(
+                "INSERT INTO tMold (ROWID, idMold, weightMold, diameterMold, thicknessMold, volumeMold, dateMold)"
+                "VALUES (?, ?, ?, ?, ?, ?, ?)")
+
+            query.bindValue(0, None)
+            query.bindValue(1, moldId)
+            query.bindValue(2, moldWeight)
+            query.bindValue(3, moldDiameter)
+            query.bindValue(4, moldThick)
+            query.bindValue(5, moldVolume)
+            query.bindValue(6, str(currentTime))
+            query.exec_()
             self.loadMold()
 
     def pushButtonEditClicked(self):
         self.setAdd()
 
         moldId = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(moldId)
         moldWeight = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 1).text()
         moldDiameter = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 2).text()
         moldThick = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 3).text()
 
-        idxMold = self.mold.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(moldId)
         self.ui.lineEditWeightRing.setText(moldWeight)
         self.ui.lineEditDiameterRing.setText(moldDiameter)
@@ -66,36 +65,37 @@ class Mold(QWidget):
         self.ui.lineEditThickRing.textChanged.connect(lambda x: float(moldThick))
 
         if self.qdialog.exec_() == QDialog.Accepted:
-            currentTime = datetime.datetime.now()
             moldWeight =  self.ui.lineEditWeightRing.text()
             moldDiameter = self.ui.lineEditDiameterRing.text()
             moldThick =  self.ui.lineEditThickRing.text()
             volume = self.calcVolume(moldDiameter, moldThick)
+            currentTime = self.currentTime()
 
             query = QSqlQuery()
             query.exec(
                 '''
                     UPDATE tMold
                     SET idMold = %d, weightMold = '%s', diameterMold = '%s', thicknessMold = '%s', volumeMold = '%s', dateMold = '%s'
-                    WHERE idxMold = %d
+                    WHERE ROWID = %d
                 ''' %
                 (
-                int(self.ui.lineEditRingId.text()),
-                self.ui.lineEditWeightRing.text(),
-                self.ui.lineEditDiameterRing.text(),
-                self.ui.lineEditThickRing.text(),
+                int(moldId),
+                moldWeight,
+                moldDiameter,
+                moldThick,
                 volume,
                 currentTime,
-                idxMold
+                rowId
                 )
             )
             self.loadMold()
 
     def pushButtonDeleteClicked(self):
-        idxMold = self.mold.tableWidget.currentRow() + 1
+        valIdMold = self.mold.tableWidget.item(self.mold.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(valIdMold)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tMold WHERE idxMold = %d' % idxMold
+            'DELETE FROM tMold WHERE ROWID = %d' % rowId
         )
         self.loadMold()
 
@@ -110,13 +110,21 @@ class Mold(QWidget):
 
         query = QSqlQuery()
         row = 0
+        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tMold')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i + 1)))
+                item.setText(str(query.value(i)))
                 self.mold.tableWidget.setItem(row, i, item)
             row += 1
+
+    def getRowId(self, idMold):
+        query = QSqlQuery()
+        query.exec_('SELECT ROWID, * FROM tMold WHERE idMold = %d' % int(idMold))
+        query.next()
+        rowId = query.value(0)
+        return rowId
 
     def getRowCount(self):
         query = QSqlQuery()
@@ -151,6 +159,9 @@ class Mold(QWidget):
         self.mold.tableWidget.setColumnWidth(3, 70)
         self.mold.tableWidget.setColumnWidth(4, 90)
         self.mold.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+    def currentTime(self):
+        return datetime.date.today()
 
 
 if __name__ == '__main__':

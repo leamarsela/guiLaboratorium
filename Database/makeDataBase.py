@@ -44,7 +44,6 @@ def createDataBase():
 
     sqlMold = '''
         CREATE TABLE tMold (
-            idxMold INTEGER NOT NULL PRIMARY KEY,
             idMold INTEGER,
             weightMold REAL,
             diameterMold REAL,
