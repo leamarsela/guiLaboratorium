@@ -55,7 +55,6 @@ def createDataBase():
 
     sqlCbr = '''
         CREATE TABLE tCbr (
-            idxCbr INTEGER NOT NULL PRIMARY KEY,
             idCbr INTEGER,
             weightCbr REAL,
             diameterCbr REAL,

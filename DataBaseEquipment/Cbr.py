@@ -25,69 +25,78 @@ class Cbr(QWidget):
         self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
-            id = self.getRowCount() + 1
             cbrId = self.ui.lineEditRingId.text()
             cbrWeight = self.ui.lineEditWeightRing.text()
             cbrDiameter = self.ui.lineEditDiameterRing.text()
             cbrThick = self.ui.lineEditThickRing.text()
             cbrVolume = self.calcVolume(cbrDiameter, cbrThick)
-            currentTime = datetime.datetime.now()
+            currentTime = self.currentTime()
             query = QSqlQuery()
-            query.exec_(
-                "INSERT INTO tCbr VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')" %
-                (
-                id,
-                cbrId,
-                cbrWeight,
-                cbrDiameter,
-                cbrThick,
-                cbrVolume,
-                currentTime
-                )
+            query.prepare(
+                "INSERT INTO tCbr (ROWID, idCbr, weightCbr, diameterCbr, thicknessCbr, volumeCbr, dateCbr)"
+                "VALUES (?, ?, ?, ?, ?, ?, ?)"
             )
+            query.bindValue(0, None)
+            query.bindValue(1, cbrId)
+            query.bindValue(2, cbrWeight)
+            query.bindValue(3, cbrDiameter)
+            query.bindValue(4, cbrThick)
+            query.bindValue(5, cbrVolume)
+            query.bindValue(6, str(currentTime))
+            query.exec_()
             self.loadCbr()
 
     def pushButtonEditClicked(self):
         self.setAdd()
 
         cbrId = self.cbr.tableWidget.item(self.cbr.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(cbrId)
         cbrWeight = self.cbr.tableWidget.item(self.cbr.tableWidget.currentRow(), 1).text()
         cbrDiameter = self.cbr.tableWidget.item(self.cbr.tableWidget.currentRow(), 2).text()
         cbrThick = self.cbr.tableWidget.item(self.cbr.tableWidget.currentRow(), 3).text()
 
-        idxCbr = self.cbr.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(cbrId)
         self.ui.lineEditWeightRing.setText(cbrWeight)
         self.ui.lineEditDiameterRing.setText(cbrDiameter)
         self.ui.lineEditThickRing.setText(cbrThick)
-        volume = self.calcVolume(cbrDiameter, cbrThick)
-        currentTime = datetime.datetime.now()
+
+        self.ui.lineEditWeightRing.textChanged.connect(lambda x: float(cbrWeight))
+        self.ui.lineEditDiameterRing.textChanged.connect(lambda x: float(cbrDiameter))
+        self.ui.lineEditThickRing.textChanged.connect(lambda x: float(cbrThick))
 
         if self.qdialog.exec_() == QDialog.Accepted:
+            cbrId = self.ui.lineEditRingId.text()
+            cbrWeight = self.ui.lineEditWeightRing.text()
+            cbrDiameter = self.ui.lineEditDiameterRing.text()
+            cbrThick = self.ui.lineEditThickRing.text()
+            volume = self.calcVolume(cbrDiameter, cbrThick)
+            currentTime = datetime.datetime.now()
+
             query = QSqlQuery()
             query.exec_(
                 '''
                     UPDATE tCbr
                     SET idCbr = %d, weightCbr = '%s', diameterCbr = '%s', thicknessCbr = '%s', volumeCbr = '%s', dateCbr = '%s'
-                    WHERE idxCbr = %d
+                    WHERE ROWID = %d
                 ''' %
                 (
-                int(self.ui.lineEditRingId.text()),
-                self.ui.lineEditWeightRing.text(),
-                self.ui.lineEditDiameterRing.text(),
-                self.ui.lineEditThickRing.text(),
+                int(cbrId),
+                cbrWeight,
+                cbrDiameter,
+                cbrThick,
                 volume,
                 currentTime,
-                idxCbr
+                rowId
                 )
             )
             self.loadCbr()
 
     def pushButtonDeleteClicked(self):
-        idxCbr = self.cbr.tableWidget.currentRow() + 1
+        valIdCbr = self.cbr.tableWidget.item(self.cbr.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(valIdCbr)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tCbr WHERE idxCbr = %d' % idxCbr
+            'DELETE FROM tCbr WHERE ROWID = %d' % rowId
         )
         self.loadCbr()
 
@@ -102,13 +111,21 @@ class Cbr(QWidget):
 
         query = QSqlQuery()
         row = 0
+        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tCbr')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i + 1)))
+                item.setText(str(query.value(i)))
                 self.cbr.tableWidget.setItem(row, i, item)
             row += 1
+
+    def getRowId(self, idCbr):
+        query = QSqlQuery()
+        query.exec_('SELECT ROWID, * FROM tCbr WHERE idCbr = %d' % int(idCbr))
+        query.next()
+        rowId = query.value(0)
+        return rowId
 
     def getRowCount(self):
         query = QSqlQuery()
@@ -135,6 +152,9 @@ class Cbr(QWidget):
     def calcVolume(self, diameter, thick):
         volume = 0.25 * pi * (float(diameter))**2 * float(thick)
         return round(volume, 3)
+
+    def currentTime(self):
+        return datetime.date.today()
 
     def setColTableWidget(self):
         self.cbr.tableWidget.setColumnWidth(0, 80)
