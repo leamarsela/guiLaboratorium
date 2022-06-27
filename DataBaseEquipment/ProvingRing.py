@@ -24,57 +24,59 @@ class ProvingRing(QWidget):
         self.setAdd()
 
         if self.qdialog.exec_() == QDialog.Accepted:
-            id = self.getRowCount() + 1
             pRingId = self.ui.lineEditRingId.text()
             pRingCalibration = self.ui.lineEditWeightRing.text()
-            currentTime =  datetime.datetime.now()
-            print(id, pRingId, pRingCalibration, currentTime)
+            currentTime =  self.currentTime()
             query = QSqlQuery()
-            query.exec_(
-                "INSERT INTO tProvingRing VALUES (%d, '%s', '%s', '%s')" %
-                (
-                id,
-                pRingId,
-                pRingCalibration,
-                currentTime
-                )
+            query.prepare(
+                    "INSERT INTO tProvingRing (ROWID, idProving, valCalibration, dateProvingRing)"
+                    "VALUES (?, ?, ?, ?)"
             )
+            query.bindValue(0, None)
+            query.bindValue(1, pRingId)
+            query.bindValue(2, pRingCalibration)
+            query.bindValue(3, str(currentTime))
+            query.exec_()
             self.loadProvingRing()
 
     def pushButtonEditClicked(self):
         self.setAdd()
 
         pRingId = self.provingRing.tableWidget.item(self.provingRing.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(pRingId)
         pRingCalibration = self.provingRing.tableWidget.item(self.provingRing.tableWidget.currentRow(), 1).text()
 
-        indexProvingRIng = self.provingRing.tableWidget.currentRow() + 1
         self.ui.lineEditRingId.setText(pRingId)
         self.ui.lineEditWeightRing.setText(pRingCalibration)
-        currentTime = datetime.datetime.now()
+
+        self.ui.lineEditWeightRing.textChanged.connect(lambda x: float(pRingCalibration))
 
         if self.qdialog.exec_() == QDialog.Accepted:
+            pRingId = self.ui.lineEditRingId.text()
+            pRingCalibration = self.ui.lineEditWeightRing.text()
+            currentTime = self.currentTime()
             query = QSqlQuery()
             query.exec_(
                 '''
                     UPDATE tProvingRing
                     SET idProving = '%s', valCalibration = '%s', dateProvingRing = '%s'
-                    WHERE idxProving = '%d'
+                    WHERE ROWID = '%d'
                 ''' %
                 (
-                self.ui.lineEditRingId.text(),
-                self.ui.lineEditWeightRing.text(),
+                int(pRingId),
+                pRingCalibration,
                 currentTime,
-                indexProvingRIng
+                rowId
                 )
             )
             self.loadProvingRing()
 
     def pushButtonDeleteClicked(self):
-        idProving = self.provingRing.tableWidget.item(self.provingRing.tableWidget.currentRow(), 0).text()
-
+        valIdProving = self.provingRing.tableWidget.item(self.provingRing.tableWidget.currentRow(), 0).text()
+        rowId = self.getRowId(valIdProving)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tProvingRing WHERE idProving = "%s"' % idProving
+            'DELETE FROM tProvingRing WHERE ROWID = %d' % rowId
         )
         self.loadProvingRing()
 
@@ -89,13 +91,28 @@ class ProvingRing(QWidget):
 
         query = QSqlQuery()
         row = 0
+        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tProvingRing')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i + 1)))
+                item.setText(str(query.value(i)))
                 self.provingRing.tableWidget.setItem(row, i, item)
             row += 1
+
+    def getRowId(self, idProving):
+        query = QSqlQuery()
+        query.exec_('SELECT ROWID, * FROM tProvingRing WHERE idProving = "%s"' % idProving)
+        query.next()
+        rowId = query.value(0)
+        return rowId
+
+    def getRowCount(self):
+        query = QSqlQuery()
+        query.exec_('SELECT COUNT(*) FROM tProvingRing')
+        query.next()
+        rowCount = query.value(0)
+        return rowCount
 
     def connectDb(self):
         db = QSqlDatabase.addDatabase('QSQLITE')
@@ -112,17 +129,13 @@ class ProvingRing(QWidget):
         self.ui.setupUi(self.qdialog)
         self.qdialog.show()
 
-    def getRowCount(self):
-        query = QSqlQuery()
-        query.exec_('SELECT COUNT(*) FROM tProvingRing')
-        query.next()
-        rowCount = query.value(0)
-        return rowCount
-
     def setColTableWidget(self):
         self.provingRing.tableWidget.setColumnWidth(0, 150)
         self.provingRing.tableWidget.setColumnWidth(1, 150)
         self.provingRing.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+    def currentTime(self):
+        return datetime.date.today()
 
 
 if __name__ == '__main__':
