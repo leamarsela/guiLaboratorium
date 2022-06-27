@@ -34,8 +34,8 @@ class RingGamma(QWidget):
             query = QSqlQuery()
             query.prepare(
                     "INSERT INTO tRingGamma (ROWID, idRingGamma, weightRingGamma, diameterRingGamma, thicknessRingGamma, volumeRingGamma, dateRingGamma)"
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)")
-
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)"
+            )
             query.bindValue(0, None)
             query.bindValue(1, ringId)
             query.bindValue(2, ringWeight)
@@ -71,7 +71,6 @@ class RingGamma(QWidget):
             ringThick = self.ui.lineEditThickRing.text()
             volume = self.calcVolume(ringDiameter, ringThick)
             currentTime = self.currentTime()
-
             query = QSqlQuery()
             query.exec_(
                 '''
@@ -110,7 +109,6 @@ class RingGamma(QWidget):
         self.setColTableWidget()
 
         query = QSqlQuery()
-        idRing, wrightRing, dRing, tRing, dateRing = range(5)
         row = 0
         query.exec_('VACUUM')
         query.exec_('SELECT * FROM tRingGamma')

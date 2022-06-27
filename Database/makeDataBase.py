@@ -66,7 +66,6 @@ def createDataBase():
 
     sqlPycnometer = '''
         CREATE TABLE tPycnometer (
-            idxPycno INTEGER NOT NULL PRIMARY KEY,
             idPycno VARCHAR(4),
             weightPycno REAL,
             valMPycno REAL,
