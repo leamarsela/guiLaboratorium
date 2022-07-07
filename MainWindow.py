@@ -4,6 +4,7 @@ import os
 dir = os.getcwd()
 
 sys.path.insert(0, dir + "/DataBaseEquipment")
+sys.path.insert(0, dir + "/DataBaseProject")
 
 from Container import *
 from RingGamma import *
@@ -12,6 +13,8 @@ from Mold import *
 from Cbr import *
 from Pycnometer import *
 from ProvingRing import *
+
+from Project import *
 
 
 from MainWindowUi import *
@@ -31,6 +34,8 @@ class MainWindow(QMainWindow):
         self.mainWindow.actionShow_Data_Cbr.triggered.connect(self.actionShowDataCbr)
         self.mainWindow.actionShow_Data_Pycnometer.triggered.connect(self.actionShowDataPycno)
         self.mainWindow.actionShow_Data_ProvingRing.triggered.connect(self.actionShowDataProvingRing)
+        self.mainWindow.actionShow_All_Project.triggered.connect(self.actionShowDataProject)
+
 
     def actionShowDataContainer(self):
         self.container = Container()
@@ -59,6 +64,11 @@ class MainWindow(QMainWindow):
     def actionShowDataProvingRing(self):
         self.provingRing = ProvingRing()
         self.provingRing.show()
+
+    def actionShowDataProject(self):
+        self.project = Project()
+        self.project.show()
+
 
 
 if __name__ == '__main__':

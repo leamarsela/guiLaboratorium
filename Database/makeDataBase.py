@@ -84,7 +84,6 @@ def createDataBase():
 
     sqlProject = '''
         CREATE TABLE tProject (
-            idxProject INTEGER NOT NULL PRIMARY KEY,
             idNumProject VARCHAR(5),
             idClient VARCHAR(50),
             idProject VARCHAR(50),
