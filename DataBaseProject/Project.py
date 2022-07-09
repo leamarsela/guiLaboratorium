@@ -100,6 +100,7 @@ class Project(QWidget):
         numberColumn = len(columnHeaders)
         self.project.tableWidget.setColumnCount(numberColumn)
         self.project.tableWidget.setHorizontalHeaderLabels(columnHeaders)
+        self.setColTableWidget()
 
         query = QSqlQuery()
         row = 0
@@ -135,6 +136,15 @@ class Project(QWidget):
         else:
             print('error')
             sys.exit(1)
+
+    def setColTableWidget(self):
+        self.project.tableWidget.setColumnWidth(0, 60)
+        self.project.tableWidget.setColumnWidth(1, 150)
+        self.project.tableWidget.setColumnWidth(2, 280)
+        self.project.tableWidget.setColumnWidth(3, 60)
+        self.project.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+
 
     def currentTime(self):
         return datetime.date.today()
