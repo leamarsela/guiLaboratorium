@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(682, 366)
+        Form.resize(394, 319)
         self.tableWidget = QtWidgets.QTableWidget(Form)
         self.tableWidget.setGeometry(QtCore.QRect(20, 40, 351, 211))
         self.tableWidget.setObjectName("tableWidget")
@@ -35,6 +35,12 @@ class Ui_Form(object):
         self.radioButton = QtWidgets.QRadioButton(Form)
         self.radioButton.setGeometry(QtCore.QRect(150, 270, 95, 20))
         self.radioButton.setObjectName("radioButton")
+        self.checkBox = QtWidgets.QCheckBox(Form)
+        self.checkBox.setGeometry(QtCore.QRect(150, 300, 81, 20))
+        self.checkBox.setObjectName("checkBox")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(20, 10, 111, 21))
+        self.label.setObjectName("label")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -55,13 +61,15 @@ class Ui_Form(object):
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("Form", "Col 3"))
         self.radioButton.setText(_translate("Form", "RadioButton"))
+        self.checkBox.setText(_translate("Form", "CheckBox"))
+        self.label.setText(_translate("Form", "TextLabel"))
 
 
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     Form = QtWidgets.QWidget()
-#     ui = Ui_Form()
-#     ui.setupUi(Form)
-#     Form.show()
-#     sys.exit(app.exec_())
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    Form = QtWidgets.QWidget()
+    ui = Ui_Form()
+    ui.setupUi(Form)
+    Form.show()
+    sys.exit(app.exec_())

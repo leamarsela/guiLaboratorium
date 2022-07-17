@@ -1,4 +1,5 @@
 import sys
+from datetime import date
 
 from PyQt5.QtSql import *
 
@@ -84,10 +85,50 @@ def createDataBase():
 
     sqlProject = '''
         CREATE TABLE tProject (
-            idNumProject VARCHAR(5),
+            projectId INTEGER PRIMARY KEY,
+            idNumProject VARCHAR(5) NOT NULL,
             idClient VARCHAR(50),
             idProject VARCHAR(50),
             dateProject NUMERIC
+        )
+    '''
+
+    sqlGroupTesting = '''
+        CREATE TABLE tGroupTesting (
+            groupTestingId INTEGER PRIMARY KEY,
+            groupName VARCHAR(50) NOT NULL,
+            dateGroupTesting NUMERIC
+        )
+    '''
+
+    sqlListSample = '''
+        CREATE TABLE tListSample (
+            listSampleId INTEGER PRIMARY KEY,
+            idArea VARCHAR(10) NOT NULL,
+            idBorehole VARCHAR(10),
+            depthFrom VARCHAR(5),
+            depthTo VARCHAR(5),
+            dateListSample NUMERIC,
+            projectId INTEGER NOT NULL,
+            groupTestingId INTEGER NOT NULL,
+            FOREIGN KEY (projectId) REFERENCES tProject(projectId) ON UPDATE CASCADE ON DELETE CASCADE,
+            FOREIGN KEY (groupTestingId) REFERENCES tGroupTesting(groupTestingId) ON UPDATE CASCADE ON DELETE CASCADE
+        )
+    '''
+
+    sqlWaterContent = '''
+        CREATE TABLE tWaterContent (
+            idWaterContent INTEGER,
+            idContainerFirst INTEGER,
+            idContainerSecond INTEGER,
+            idContainerThird INTEGER,
+            idWetSoilContainerFirst REAL,
+            idWetSoilContainerSecond REAL,
+            idWetSoilContainerThird REAL,
+            idDrySoilContainerFirst REAL,
+            idDrySoilContainerSecond REAL,
+            idDrySoilContainerThird REAL,
+            dateWaterContent NUMERIC
         )
     '''
 
@@ -101,11 +142,69 @@ def createDataBase():
         sqlCbr,
         sqlPycnometer,
         sqlProvingRing,
-        sqlProject
+        sqlProject,
+        sqlListSample,
+        sqlGroupTesting
     ]
 
     for sql in listTable:
         query.exec_(sql)
+
+
+    groupNameList = [
+        'atterbergLimit',
+        'cbrSoaked',
+        'cbrUnsoaked',
+        'chlorideContent',
+        'compation',
+        'consolidation',
+        'consolidationSwelling',
+        'directShearRock',
+        'directShearSoil',
+        'emerson',
+        'hydrometer',
+        'losAngelesAbrasion',
+        'organicContent',
+        'permeabilityFallingHead',
+        'permeabilityConstantHead',
+        'phTest',
+        'pointLoad',
+        'propertiesRock',
+        'sieveAnalysis',
+        'slakeDurability',
+        'spesificGravity',
+        'sulphateContent',
+        'tensile',
+        'triaxialCd',
+        'triaxialCu',
+        'triaxialRock'
+        'triaxialUu',
+        'ucs',
+        'ucsPoisson',
+        'uct',
+        'ultrasonic',
+        'unitWeight',
+        'waterContent'
+    ]
+
+    groupIdList = []
+    dateGroupTestingList = []
+    for i in range(len(groupNameList)-1):
+        groupIdList.append(None)
+        dateGroupTestingList.append(str(date.today()))
+
+
+    query = QSqlQuery()
+
+    query.prepare("INSERT INTO tGroupTesting VALUES (?, ?, ?)")
+
+    query.addBindValue(groupIdList)
+    query.addBindValue(groupNameList)
+    query.addBindValue(dateGroupTestingList)
+
+    if not query.execBatch():
+        print(query.lastError())
+
 
 
 

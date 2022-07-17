@@ -87,9 +87,19 @@
      </property>
      <addaction name="actionShow_All_Project"/>
     </widget>
+    <widget class="QMenu" name="menuData_List_Sample">
+     <property name="title">
+      <string>Database List Sample</string>
+     </property>
+     <addaction name="actionShow_List_Sample"/>
+     <addaction name="separator"/>
+     <addaction name="actionAdd_List_Sample"/>
+    </widget>
     <addaction name="menuDatabase_Equipment"/>
     <addaction name="separator"/>
     <addaction name="menuDatabase_Project"/>
+    <addaction name="separator"/>
+    <addaction name="menuData_List_Sample"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -172,6 +182,16 @@
   <action name="actionShow_All_Project">
    <property name="text">
     <string>Show All Project</string>
+   </property>
+  </action>
+  <action name="actionShow_List_Sample">
+   <property name="text">
+    <string>Show List Sample</string>
+   </property>
+  </action>
+  <action name="actionAdd_List_Sample">
+   <property name="text">
+    <string>Add List Sample</string>
    </property>
   </action>
  </widget>

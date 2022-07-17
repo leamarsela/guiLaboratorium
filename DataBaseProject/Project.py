@@ -30,7 +30,7 @@ class Project(QWidget):
             currentTime = self.currentTime()
             query = QSqlQuery()
             query.prepare(
-                    "INSERT INTO tProject (ROWID, idNumProject, idClient, idProject, dateProject)"
+                    "INSERT INTO tProject (projectId, idNumProject, idClient, idProject, dateProject)"
                     "VALUES (?, ?, ?, ?, ?)"
             )
             query.bindValue(0, None)
@@ -41,12 +41,11 @@ class Project(QWidget):
             query.exec_()
             self.loadDataProject()
 
-
     def pushButtonEditClicked(self):
         self.setAdd()
 
         idNumProject = self.project.tableWidget.item(self.project.tableWidget.currentRow(), 0).text()
-        rowId = self.getRowId(idNumProject)
+        projectId = self.getProjectId(idNumProject)
         clientId = self.project.tableWidget.item(self.project.tableWidget.currentRow(), 1).text()
         projectName = self.project.tableWidget.item(self.project.tableWidget.currentRow(), 2).text()
 
@@ -66,24 +65,23 @@ class Project(QWidget):
                 '''
                     UPDATE tProject
                     SET idNumProject = '%s', idClient = '%s', idProject = '%s', dateProject = '%s'
-                    WHERE ROWID = %d
+                    WHERE projectId = %d
                 ''' %
                 (
                 idNumProject,
                 clientId,
                 projectName,
                 str(currentTime),
-                rowId
+                projectId
                 )
             )
             self.loadDataProject()
 
     def pushButtonDeleteClicked(self):
         valIdNumProject = self.project.tableWidget.item(self.project.tableWidget.currentRow(), 0).text()
-        rowId = self.getRowId(valIdNumProject)
         query = QSqlQuery()
         query.exec_(
-            'DELETE FROM tProject WHERE ROWID = %d' % rowId
+            'DELETE FROM tProject WHERE idNumProject = %s' % valIdNumProject
         )
         self.loadDataProject()
 
@@ -104,21 +102,20 @@ class Project(QWidget):
 
         query = QSqlQuery()
         row = 0
-        query.exec_('VACUUM')
         query.exec_('SELECT * FROM tProject')
         while query.next():
             for i in range(numberColumn):
                 item = QTableWidgetItem()
-                item.setText(str(query.value(i)))
+                item.setText(str(query.value(1 + i)))
                 self.project.tableWidget.setItem(row, i, item)
             row += 1
 
-    def getRowId(self, idNumProject):
+    def getProjectId(self, idNumProject):
         query = QSqlQuery()
-        query.exec_('SELECT ROWID, * FROM tProject WHERE idNumProject = "%s"' % idNumProject)
+        query.exec_('SELECT projectId FROM tProject WHERE idNumProject = "%s"' % idNumProject)
         query.next()
-        rowId = query.value(0)
-        return rowId
+        projectId = query.value(0)
+        return projectId
 
     def getRowCount(self):
         query = QSqlQuery()
@@ -126,7 +123,6 @@ class Project(QWidget):
         query.next()
         rowCount = query.value(0)
         return rowCount
-
 
     def connectDb(self):
         db = QSqlDatabase.addDatabase('QSQLITE')
@@ -143,8 +139,6 @@ class Project(QWidget):
         self.project.tableWidget.setColumnWidth(2, 280)
         self.project.tableWidget.setColumnWidth(3, 60)
         self.project.tableWidget.horizontalHeader().setStretchLastSection(True)
-
-
 
     def currentTime(self):
         return datetime.date.today()

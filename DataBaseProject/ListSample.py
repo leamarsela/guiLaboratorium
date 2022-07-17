@@ -2,8 +2,6 @@ import sys
 
 from ListSampleUi import *
 
-
-
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtSql import *
@@ -14,6 +12,7 @@ class ListSample(QWidget):
         QWidget.__init__(self, parent)
         self.listSample = Ui_Form()
         self.listSample.setupUi(self)
+        self.label = self.listSample.label
         self.cobaTable()
 
     def buatCheckBox(self, namaCb):
